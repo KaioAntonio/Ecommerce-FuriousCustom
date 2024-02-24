@@ -4,7 +4,9 @@ package com.FuriousCustom.controller;
 import com.FuriousCustom.config.exception.RegraDeNegocioException;
 import com.FuriousCustom.config.responses.ResultUtilSucess;
 import com.FuriousCustom.domain.dto.user.LoginDTO;
+import com.FuriousCustom.domain.dto.user.UserAuthResponse;
 import com.FuriousCustom.domain.dto.user.UserCreateDTO;
+import com.FuriousCustom.domain.dto.user.UserDTO;
 import com.FuriousCustom.domain.service.AuthService;
 import com.FuriousCustom.domain.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,8 +41,8 @@ public class UserController {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @PostMapping
-    public ResponseEntity<ResultUtilSucess> auth(@RequestBody @Valid LoginDTO loginDTO) throws RegraDeNegocioException {
+    @PostMapping("/auth")
+    public ResponseEntity<UserAuthResponse> auth(@RequestBody @Valid LoginDTO loginDTO) throws RegraDeNegocioException {
         return authService.getResultUtilSucess(loginDTO);
 
     }
@@ -54,8 +56,8 @@ public class UserController {
             }
     )
     @PostMapping("/create")
-    public ResponseEntity<ResultUtilSucess> create(@RequestBody @Valid UserCreateDTO usuarioCreateDTO){
-        return new ResponseEntity<>(new ResultUtilSucess(userService.create(usuarioCreateDTO)), HttpStatus.OK);
+    public ResponseEntity<UserDTO> create(@RequestBody @Valid UserCreateDTO usuarioCreateDTO){
+        return new ResponseEntity<>(userService.create(usuarioCreateDTO), HttpStatus.OK);
     }
 
 }
