@@ -1,7 +1,7 @@
 package com.FuriousCustom.domain.service;
 
 
-import com.FuriousCustom.config.exception.RegraDeNegocioException;
+import com.FuriousCustom.config.exception.ServiceException;
 import com.FuriousCustom.domain.dto.user.LoginDTO;
 import com.FuriousCustom.domain.dto.user.UserAuthResponse;
 import com.FuriousCustom.domain.entity.User;
@@ -23,7 +23,7 @@ public class AuthService {
     private final TokenService tokenService;
     private final ObjectMapper objectMapper;
 
-    public ResponseEntity<UserAuthResponse> getResultUtilSucess(LoginDTO loginDTO) throws RegraDeNegocioException {
+    public ResponseEntity<UserAuthResponse> getResultUtilSucess(LoginDTO loginDTO) throws ServiceException {
         try {
             UsernamePasswordAuthenticationToken userAuthDTO = new UsernamePasswordAuthenticationToken(loginDTO.getEmail(),
                     loginDTO.getPassword());
@@ -35,7 +35,7 @@ public class AuthService {
             return new ResponseEntity<>(userAuthResponse, HttpStatus.OK);
         }
         catch (Exception e){
-            throw new RegraDeNegocioException("Erro ao realizar o login!");
+            throw new ServiceException("Erro ao realizar o login!");
         }
     }
 }
