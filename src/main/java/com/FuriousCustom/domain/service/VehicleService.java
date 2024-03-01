@@ -8,6 +8,7 @@ import com.FuriousCustom.domain.entity.Vehicle;
 import com.FuriousCustom.domain.repository.VehicleRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +23,7 @@ public class VehicleService {
 
     private final VehicleRepository vehicleRepository;
     private final ObjectMapper objectMapper;
+    private final ModelMapper modelMapper;
 
     public VehicleDTO create(VehicleCreateDTO vehicleCreateDTO) {
         Vehicle vehicle = objectMapper.convertValue(vehicleCreateDTO, Vehicle.class);
@@ -45,6 +47,17 @@ public class VehicleService {
                 size,
                 vehicleDTOS);
 
+    }
+
+    public VehicleDTO update(VehicleCreateDTO vehicleCreateDTO, Integer id) throws ServiceException {
+        Vehicle vehicle = findById(id);
+        modelMapper.map(vehicleCreateDTO, vehicle);
+        vehicleRepository.save(vehicle);
+        return modelMapper.map(vehicle, VehicleDTO.class);
+    }
+
+    public void delete(Integer id) throws ServiceException {
+        vehicleRepository.delete(findById(id));
     }
 
 }

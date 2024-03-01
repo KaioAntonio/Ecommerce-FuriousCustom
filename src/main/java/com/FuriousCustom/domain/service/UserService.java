@@ -8,6 +8,7 @@ import com.FuriousCustom.domain.entity.User;
 import com.FuriousCustom.domain.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +26,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ObjectMapper objectMapper;
+    private final ModelMapper modelMapper;
 
     public Optional<User> findByEmail(String email){
         return userRepository.findByEmail(email);
@@ -67,9 +69,7 @@ public class UserService {
     public UserDTO update(UserCreateDTO userCreateDTO, Integer id) throws ServiceException
     {
         User user = findById(id);
-        user.setAge(userCreateDTO.getAge());
-        user.setEmail(userCreateDTO.getEmail());
-        user.setUsername(userCreateDTO.getUsername());
+        modelMapper.map(userCreateDTO, user);
         user.setPassword(passwordEncoder.encode(userCreateDTO.getPassword()));
         userRepository.save(user);
         return objectMapper.convertValue(user, UserDTO.class);
