@@ -10,10 +10,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PageDTO<T>{
-    private Long totalElementos;
-    private Integer quantidadePaginas;
-    private Integer pagina;
-    private Integer tamanho;
-    private List<T> elementos;
+    private Long totalElements;
+    private Integer PageQuantity;
+    private Integer page;
+    private Integer size;
+    private List<T> elements;
 }
 
